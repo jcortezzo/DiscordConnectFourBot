@@ -1,0 +1,1 @@
+worker: heroku ps:scale worker=1 & java -jar target/connectfour-1.0-SNAPSHOT.jar
