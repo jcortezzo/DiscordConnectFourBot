@@ -116,8 +116,6 @@ public class ConnectFourListener extends ListenerAdapter {
         }
 
         if (game.getPlayerToMove().getDiscordUser().equals(user)) {
-            sendMessage(channel, String.format("%s", event.getEmoji().toString()));
-            sendMessage(channel, Emoji.fromFormatted(Reaction.FIVE.getSymbol()).toString());
             Player winner = game.dropPiece(
                 Arrays.stream(Reaction.values()).filter(r -> Emoji.fromFormatted(r.getSymbol()).toString().equals(event.getEmoji().toString())).findFirst().get().getColumn() - 1
             );
