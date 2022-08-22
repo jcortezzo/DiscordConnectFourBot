@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -87,12 +89,28 @@ public class ConnectFourListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
+        // Ignore this bot reacting to any posts
         User user = event.retrieveUser().complete();
         if (user.equals(App.getUser())) {
             return;
         }
 
-        String messageBody = event.retrieveMessage().complete().getContentRaw();
+        // Ignore reactions on any message not authored by this bot
+        Message message = event.retrieveMessage().complete();
+        if (!message.getAuthor().equals(App.getUser())) {
+            return;
+        }
+
+        // Ignore if some User added a different invalid reaction
+        boolean validReaction = Arrays.stream(Reaction.values())
+                .filter(r -> Emoji.fromFormatted(r.getSymbol()).toString().equals(event.getEmoji().toString()))
+                .findAny()
+                .isPresent();
+        if (!validReaction) {
+            return;
+        }
+
+        String messageBody = message.getContentRaw();
         MessageChannel channel = event.getChannel();
 
         Scanner scan = new Scanner(messageBody);
