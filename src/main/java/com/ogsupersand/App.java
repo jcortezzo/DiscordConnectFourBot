@@ -8,6 +8,7 @@ import org.json.simple.parser.JSONParser;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 /**
@@ -36,5 +37,9 @@ public class App
             e.printStackTrace();
         }
         
+    }
+
+    public static User getUser() {
+        return jda == null ? null : jda.getSelfUser();
     }
 }

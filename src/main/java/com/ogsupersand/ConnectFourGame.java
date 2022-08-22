@@ -148,12 +148,17 @@ public class ConnectFourGame {
     @Override
     public String toString() {
         if (!isGameStarted()) return "";
+
         StringBuilder result = new StringBuilder();
+        for (Player p : players) {
+            result.append(String.format("%s: %s%n", p.getDiscordUser().getAsMention(), p.getTileType().toString()));
+        }
+        
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
                 result.append(boardMap.get(new Point(x, y)).getType().toString());
             }
-            result.append("\n");
+            result.append(String.format("%n"));
         }
         return result.toString();
     }
