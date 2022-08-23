@@ -150,8 +150,9 @@ public class ConnectFourGame {
         if (!isGameStarted()) return "";
 
         StringBuilder result = new StringBuilder();
+        result.append(String.format("%s\'s turn to move.%n%n", getPlayerToMove().getMention()));
         for (Player p : players) {
-            result.append(String.format("%s: %s%n", p.getDiscordUser().getAsMention(), p.getTileType().toString()));
+            result.append(String.format("%s: %s%n", p.getDiscordUser(), p.getTileType().toString()));
         }
         
         for (int y = 0; y < HEIGHT; y++) {

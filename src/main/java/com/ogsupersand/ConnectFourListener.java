@@ -102,8 +102,9 @@ public class ConnectFourListener extends ListenerAdapter {
         }
 
         // Ignore if some User added a different invalid reaction
+        Emoji emoji = event.getEmoji();
         boolean validReaction = Arrays.stream(Reaction.values())
-                .filter(r -> Emoji.fromFormatted(r.getSymbol()).toString().equals(event.getEmoji().toString()))
+                .filter(r -> formattedEmojiEquals(r.getSymbol(), emoji))
                 .findAny()
                 .isPresent();
         if (!validReaction) {
@@ -135,7 +136,11 @@ public class ConnectFourListener extends ListenerAdapter {
 
         if (game.getPlayerToMove().getDiscordUser().equals(user)) {
             Player winner = game.dropPiece(
-                Arrays.stream(Reaction.values()).filter(r -> Emoji.fromFormatted(r.getSymbol()).toString().equals(event.getEmoji().toString())).findFirst().get().getColumn() - 1
+                Arrays.stream(Reaction.values())
+                        .filter(r -> formattedEmojiEquals(r.getSymbol(), emoji))
+                        .findFirst()
+                        .get()
+                        .getColumn() - 1
             );
             if (winner != null) {
                 sendMessage(channel, String.format("%s wins!", winner.getMention()));
@@ -165,5 +170,9 @@ public class ConnectFourListener extends ListenerAdapter {
                         m.addReaction(Emoji.fromUnicode(reaction.getSymbol())).queue()
                 );
         });
+    }
+
+    private boolean formattedEmojiEquals(String s, Emoji emoji) {
+        return Emoji.fromFormatted(s).toString().equals(emoji.toString());
     }
 }

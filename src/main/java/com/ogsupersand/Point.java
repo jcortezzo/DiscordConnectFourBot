@@ -1,15 +1,11 @@
 package com.ogsupersand;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class Point {
     public int x;
     public int y;
-
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public Point() {}
 
     @Override
     public boolean equals(Object obj) {
